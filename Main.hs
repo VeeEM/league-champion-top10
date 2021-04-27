@@ -15,6 +15,7 @@ import qualified Data.Text.Lazy as T
 import qualified Data.Text.Lazy.Encoding as T
 import qualified Network.HTTP.Client as HTTP
 import qualified Network.HTTP.Client.TLS as HTTP
+import System.Directory
 import System.Environment
 import System.Exit
 import Text.HTML.Scalpel
@@ -153,11 +154,13 @@ fetchLatestVersion = do
 
 updateChampionJSON :: IO ()
 updateChampionJSON = do
+  appdir <- getAppUserDataDirectory "lctop"
+  createDirectoryIfMissing False appdir
   version <- fetchLatestVersion
   championJSON <- fetchDataFromURL $ "http://ddragon.leagueoflegends.com/cdn/" ++ version ++ "/data/en_US/champion.json"
   -- Convert to lowercase for case insensitive search
   let lowerChampionJSON = T.encodeUtf8 $ T.toLower $ T.decodeUtf8 championJSON
-  BSL.writeFile "champion.json" lowerChampionJSON
+  BSL.writeFile (appdir ++ "/champion.json") lowerChampionJSON
 
 parseChampionMap :: Value -> Parser (HM.HashMap String String)
 parseChampionMap = withObject "object" $ \obj -> do
@@ -166,7 +169,8 @@ parseChampionMap = withObject "object" $ \obj -> do
 
 loadChampionMap :: IO (HM.HashMap String String)
 loadChampionMap = do
-  file <- BSL.readFile "champion.json"
+  appdir <- getAppUserDataDirectory "lctop"
+  file <- BSL.readFile (appdir ++ "/champion.json")
   let decoded = fromJust $ decode file :: Value
   return $ fromJust $ parseMaybe parseChampionMap decoded
 
