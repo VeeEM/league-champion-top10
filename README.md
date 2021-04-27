@@ -1,5 +1,7 @@
 # league-champion-top10 (lctop)
 
+![Image example of top 10 list output by lctop.](example.png)
+
 lctop is a command line utility for retrieving the top 10 highest ranked players from op.gg champion enthusiasts pages. Players are sorted in descending order by rank, games played on champion and winrate, in that order.
 
 ## Installation
