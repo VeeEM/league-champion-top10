@@ -119,7 +119,9 @@ maxUrlLength :: [Player] -> Int
 maxUrlLength = maximum . map (length . BSL.toString . playerURL)
 
 createTable :: [Player] -> String
-createTable players = intercalate "\n" $ map (playerToString maxUrlLen) players
+createTable players =
+  "Url" ++ replicate (maxUrlLen + 1) ' ' ++ "Rank\tGames\tWinrate\n"
+  ++ (intercalate "\n" $ map (playerToString maxUrlLen) players)
   where
     maxUrlLen = maxUrlLength players
 
@@ -129,7 +131,7 @@ playerToString maxUrlLen p =
   ++ padding
   ++ (show $ rank p) ++ "\t"
   ++ (show $ games p) ++ "\t"
-  ++ (show $ winrate p)
+  ++ (show $ winrate p) ++ "%"
   where
     currentUrlLen = length $ BSL.toString $ playerURL p
     padding = replicate (maxUrlLen - currentUrlLen + 4) ' '
