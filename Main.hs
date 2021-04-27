@@ -129,7 +129,7 @@ playerToString :: Int -> Player -> String
 playerToString maxUrlLen p =
      (BSL.toString $ playerURL p)
   ++ padding
-  ++ (show $ rank p) ++ "\t"
+  ++ (show $ rank p) ++ "  \t"
   ++ (show $ games p) ++ "\t"
   ++ (show $ winrate p) ++ "%"
   where
