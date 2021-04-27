@@ -210,7 +210,7 @@ printHelp = do
   putStrLn "To view top10: lctop REGION CHAMPION\n"
   putStrLn "Available regions:"
   putStrLn $ intercalate "\n" $ HM.elems prefixes
-  putStrLn "\nTo update champion list: lctop update"
+  putStrLn "\nTo update or create champion list: lctop update"
 
 main :: IO ()
 main = do
